@@ -1,0 +1,2 @@
+- name: Install tmux
+  pacman: name=tmux
