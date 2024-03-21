@@ -15,13 +15,3 @@
     src: "{{ source_key }}.pub"
     dest: "{{ dest_key }}.pub"
     mode: 0644
-- name: Set authorized key took from file
-  authorized_key:
-    user: "{{ lookup('env', 'USER') }}"
-    state: present
-    key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519.pub"
-  with_fileglob:
-  - "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519.pub"
-
-
-  
