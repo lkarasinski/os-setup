@@ -1,16 +1,16 @@
 - name: Remove dotfiles directory
   ansible.builtin.file: 
-    path: "~/dotfiles"
+    path: "/home/lkarasinski/dotfiles"
     state: absent
 - name: Clone the dotfiles repo
   ansible.builtin.git:
     repo: "https://github.com/lkarasinski/dotfiles.git"
-    dest: "~/dotfiles"
+    dest: "/home/lkarasinski/dotfiles"
 - name: Install stow
   pacman: name=stow
 - name: Remove existing ~/.zshrc
   ansible.builtin.file: 
-    path: "~/.zshrc"
+    path: "/home/lkarasinski/.zshrc"
     state: absent
 - name: Run installation script
-  shell: "chdir=/root/dotfiles zsh ./install"
+  shell: "chdir=/home/lkarasinski/dotfiles zsh ./install"
