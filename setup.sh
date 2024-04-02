@@ -9,5 +9,6 @@ pacman -S --needed --noconfirm git base-devel && git clone https://aur.archlinux
 pacman -S --noconfirm ansible-core git
 ansible-galaxy collection install community.general
 ansible-galaxy collection install ansible.posix
+ansible-galaxy collection install kewlfft.aur
 git clone https://github.com/lkarasinski/arch-playbook /tmp/arch-playbook
 ansible-playbook /tmp/arch-playbook/arch-playbook.yml --ask-vault-pass
