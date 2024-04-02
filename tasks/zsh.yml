@@ -1,6 +1,6 @@
 - name: Remove oh-my-zsh directory
   ansible.builtin.file: 
-    path: "~/.oh-my-zsh"
+    path: "/home/lkarasinski/.oh-my-zsh"
     state: absent
 - name: Install zsh
   pacman: name=zsh
@@ -9,12 +9,12 @@
 - name: Install util-linux
   pacman: name=util-linux
 - name: Change shell
-  shell: chsh -s `which zsh`
+  shell: chsh lkarasinski -s `which zsh`
 
 - name: Download Oh My Zsh installation script
-  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  shell: USER=lkarasinski HOME=/home/lkarasinski sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 - name: Install ohmyzsh autosuggestions
   ansible.builtin.git:
     repo: "https://github.com/zsh-users/zsh-autosuggestions.git"
-    dest: "~/.oh-my-zsh/plugins/zsh-autosuggestions"
+    dest: "/home/lkarasinski/.oh-my-zsh/plugins/zsh-autosuggestions"
