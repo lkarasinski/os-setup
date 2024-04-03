@@ -1,23 +1,14 @@
 - hosts: localhost
-  tasks:
-  - name: Install git
-    pacman: name=git
-  - name: Add lkarasinski user
-    ansible.builtin.user:
-      name: "lkarasinski"
-      password: "$6$n36uYc1.7ds45gTS$36dYFB1PguMvn1GbghcAuuRnd53K4iMSawqr4H5usZK5Vsm.ioKX8M9Leg7SR2f8DguhdYTFJDMsxMYUxfT4G/"
   roles: 
   - role: jahrik.yay
     install: true
-    become: true
-    become_user: lkarasinski
   become: true
   vars:
     source_key: "./.ssh/id_ed25519"
     dest_key: "{{ lookup('env', 'HOME') }}/.ssh/id_ed25519"
   tasks:
-  - name: Install tmux
-    pacman: name=tmux
+  - name: Install git
+    pacman: name=git
   - include_tasks: tasks/ssh.yml
   - include_tasks: tasks/zsh.yml
   - include_tasks: tasks/tmux.yml
