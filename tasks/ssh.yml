@@ -15,3 +15,8 @@
     src: "{{ source_key }}.pub"
     dest: "{{ dest_key }}.pub"
     mode: 0644
+- name: Enable sshd service
+  ansible.builtin.service:
+    name: sshd
+    state: started
+    enable: true
