@@ -10,7 +10,18 @@
   - name: Install git
     pacman: name=git
   - include_tasks: tasks/ssh.yml
+    tags:
+    - ssh
   - include_tasks: tasks/zsh.yml
+    tags:
+    - zsh
   - include_tasks: tasks/tmux.yml
+    tags:
+    - tmux
   - include_tasks: tasks/nvim.yml
+    tags:
+    - nvim
   - include_tasks: tasks/dotfiles.yml
+    tags:
+    - dotfiles
+  - include_tasks: tasks/languages.yml
