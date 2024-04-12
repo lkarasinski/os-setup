@@ -1,6 +1,8 @@
 curl -Ls https://raw.githubusercontent.com/lkarasinski/arch-playbook/main/prepare-arch.sh | sh
 
-git clone https://github.com/lkarasinski/arch-playbook /tmp/arch-playbook
+BRANCH=${1:-main}
+
+git clone -b "$BRANCH" https://github.com/lkarasinski/arch-playbook /tmp/arch-playbook
 ansible-playbook /tmp/arch-playbook/setup-user.yml
 
 sudo -u lkarasinski -H sh -c "ansible-galaxy collection install community.general"
