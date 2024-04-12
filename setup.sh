@@ -2,6 +2,9 @@ curl -Ls https://raw.githubusercontent.com/lkarasinski/arch-playbook/main/prepar
 
 BRANCH=${1:-main}
 
+# Make sure there is no /tmp/arch-playbook directory
+sudo rm -rf /tmp/arch-playbook
+
 git clone -b "$BRANCH" https://github.com/lkarasinski/arch-playbook /tmp/arch-playbook
 ansible-playbook /tmp/arch-playbook/setup-user.yml
 
