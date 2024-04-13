@@ -8,4 +8,4 @@ git clone -b "$BRANCH" https://github.com/lkarasinski/os-setup /tmp/os-setup
 ansible-playbook /tmp/os-setup/setup-user.yml
 
 sudo -u lkarasinski -H sh -c "ansible-galaxy install -r /tmp/os-setup/requirements.yml"
-sudo -u lkarasinski -H sh -c "ansible-playbook /tmp/os-setup/os-setup.yml --ask-vault-pass"
+sudo -u lkarasinski -H sh -c "ansible-playbook /tmp/os-setup/arch-playbook.yml --ask-vault-pass"
