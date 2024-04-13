@@ -6,3 +6,11 @@
   shell: "pyenv install -v 3.12.2"
   tags:
   - python
+- name: Install fnm
+  become: true
+  become_user: lkarasinski
+  kewlfft.aur.aur:
+    use: yay
+    name: fnm
+  tags:
+  - javascript

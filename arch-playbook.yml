@@ -25,3 +25,6 @@
     tags:
     - dotfiles
   - include_tasks: tasks/languages.yml
+  - include_tasks: tasks/utils.yml
+    tags:
+      - utils

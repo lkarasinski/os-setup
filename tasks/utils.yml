@@ -1,0 +1,6 @@
+- name: Install zoxide
+  become: true
+  become_user: lkarasinski
+  kewlfft.aur.aur:
+    use: yay
+    name: zoxide
