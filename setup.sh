@@ -1,6 +1,5 @@
-curl -Ls https://raw.githubusercontent.com/lkarasinski/arch-playbook/main/prepare-arch.sh | sh
-
 BRANCH=${1:-main}
+curl -Ls "https://raw.githubusercontent.com/lkarasinski/arch-playbook/$BRANCH/prepare-arch.sh" | sh
 
 # Make sure there is no /tmp/arch-playbook directory
 sudo rm -rf /tmp/arch-playbook
