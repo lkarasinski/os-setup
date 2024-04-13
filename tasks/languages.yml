@@ -3,6 +3,8 @@
   tags:
   - python
 - name: Install Python 3
+  # Pyenv throws error if version is already installed
+  ignore_errors: true
   shell: "pyenv install -v 3.12.2"
   tags:
   - python

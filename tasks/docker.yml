@@ -11,6 +11,7 @@
     use: yay
     name: docker-compose
 - name: Start docker service
+  ignore_errors: true
   ansible.builtin.service:
     name: docker
     state: started
