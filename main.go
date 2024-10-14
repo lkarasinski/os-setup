@@ -113,6 +113,10 @@ func setupBase() {
 	runCommand("apt", "install", "-y", "curl", "git", "software-properties-common")
 	runCommand("apt-add-repository", "--yes", "--update", "ppa:ansible/ansible")
 	runCommand("apt", "install", "-y", "ansible")
+
+	runCommand("rm", "-rf", "/tmp/os-setup")
+	runCommand("git", "clone", "https://github.com/lkarasinski/os-setup.git", "/tmp/os-setup")
+	runCommand("ansible-playbook", "/tmp/os-setup/playbooks/system_setup.yml")
 }
 
 func runCommand(name string, args ...string) {

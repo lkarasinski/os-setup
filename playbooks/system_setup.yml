@@ -1,0 +1,88 @@
+---
+- name: User Setup for lkarasinski
+  hosts: localhost
+  become: yes
+  vars:
+    new_user: "lkarasinski"
+    user_shell: "/usr/bin/fish"
+
+  tasks:
+    - name: Ensure the user exists
+      user:
+        name: "{{ new_user }}"
+        shell: "{{ user_shell }}"
+        groups: sudo
+        append: yes
+
+    - name: Install fish and tmux
+      package:
+        name:
+          - fish
+          - tmux
+        state: present
+
+    - name: Set fish as default shell for the user
+      user:
+        name: "{{ new_user }}"
+        shell: "{{ user_shell }}"
+
+    - name: Install zoxide for the user
+      become_user: "{{ new_user }}"
+      shell: |
+        curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+      args:
+        creates: "/home/{{ new_user }}/.local/bin/zoxide"
+
+    - name: Add ~/.local/bin to PATH in .profile
+      become_user: "{{ new_user }}"
+      blockinfile:
+        path: "/home/{{ new_user }}/.profile"
+        create: yes
+        block: |
+          # set PATH so it includes user's private bin if it exists
+          if [ -d "$HOME/.local/bin" ] ; then
+              PATH="$HOME/.local/bin:$PATH"
+          fi
+
+    - name: Add ~/.local/bin to PATH in fish config
+      become_user: "{{ new_user }}"
+      blockinfile:
+        path: "/home/{{ new_user }}/.config/fish/config.fish"
+        create: yes
+        block: |
+          if not contains ~/.local/bin $PATH
+            set -gx PATH ~/.local/bin $PATH
+          end
+
+    - name: Set up zoxide for the user in fish
+      become_user: "{{ new_user }}"
+      blockinfile:
+        path: "/home/{{ new_user }}/.config/fish/config.fish"
+        block: |
+          if command -v zoxide > /dev/null
+            zoxide init fish | source
+          end
+
+    - name: Set up zoxide for the user in bash
+      become_user: "{{ new_user }}"
+      blockinfile:
+        path: "/home/{{ new_user }}/.bashrc"
+        create: yes
+        block: |
+          if command -v zoxide > /dev/null; then
+            eval "$(zoxide init bash)"
+          fi
+
+    - name: Ensure .tmux.conf exists
+      file:
+        path: "/home/{{ new_user }}/.tmux.conf"
+        state: touch
+        owner: "{{ new_user }}"
+        group: "{{ new_user }}"
+        mode: '0644'
+
+    - name: Add basic tmux configuration
+      lineinfile:
+        path: "/home/{{ new_user }}/.tmux.conf"
+        line: "set -g mouse on"
+        create: yes
