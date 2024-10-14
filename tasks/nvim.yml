@@ -1,2 +1,0 @@
-- name: Install neovim
-  pacman: name=neovim
