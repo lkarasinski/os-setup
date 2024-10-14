@@ -25,7 +25,7 @@ var (
 			Bold(true).
 			Background(lipgloss.Color("#082f49")).
 			Foreground(lipgloss.Color("#bae6fd")).
-			MarginLeft(4).
+			MarginLeft(2).
 			MarginTop(1).
 			PaddingTop(1).
 			PaddingRight(1).
@@ -107,7 +107,7 @@ func runSetup(optionName string) {
 }
 
 func setupBase() {
-	fmt.Println("Performing base setup...")
+	fmt.Println(alertStyle.Render("Performing base setup..."))
 	runCommand("apt", "update")
 	runCommand("apt", "upgrade", "-y")
 	runCommand("apt", "install", "-y", "curl", "git", "software-properties-common")
