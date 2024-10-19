@@ -5,7 +5,6 @@
   vars:
     new_user: "lkarasinski"
     user_shell: "/usr/bin/fish"
-
   tasks:
     - name: Ensure the user exists
       user:
@@ -13,26 +12,44 @@
         shell: "{{ user_shell }}"
         groups: sudo
         append: yes
-
-    - name: Install fish and tmux
+    - name: Install fish, tmux, and required packages for Docker
       package:
         name:
           - fish
           - tmux
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
         state: present
-
     - name: Set fish as default shell for the user
       user:
         name: "{{ new_user }}"
         shell: "{{ user_shell }}"
-
-    - name: Install zoxide for the user
-      become_user: "{{ new_user }}"
-      shell: |
-        curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
-      args:
-        creates: "/home/{{ new_user }}/.local/bin/zoxide"
-
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+    - name: Install Docker
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: yes
+    - name: Install Docker Compose
+      get_url:
+        url: https://github.com/docker/compose/releases/latest/download/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+    - name: Add user to docker group
+      user:
+        name: "{{ new_user }}"
+        groups: docker
+        append: yes
     - name: Add ~/.local/bin to PATH in .profile
       become_user: "{{ new_user }}"
       blockinfile:
@@ -43,7 +60,6 @@
           if [ -d "$HOME/.local/bin" ] ; then
               PATH="$HOME/.local/bin:$PATH"
           fi
-
     - name: Add ~/.local/bin to PATH in fish config
       become_user: "{{ new_user }}"
       blockinfile:
@@ -53,26 +69,6 @@
           if not contains ~/.local/bin $PATH
             set -gx PATH ~/.local/bin $PATH
           end
-
-    - name: Set up zoxide for the user in fish
-      become_user: "{{ new_user }}"
-      blockinfile:
-        path: "/home/{{ new_user }}/.config/fish/config.fish"
-        block: |
-          if command -v zoxide > /dev/null
-            zoxide init fish | source
-          end
-
-    - name: Set up zoxide for the user in bash
-      become_user: "{{ new_user }}"
-      blockinfile:
-        path: "/home/{{ new_user }}/.bashrc"
-        create: yes
-        block: |
-          if command -v zoxide > /dev/null; then
-            eval "$(zoxide init bash)"
-          fi
-
     - name: Ensure .tmux.conf exists
       file:
         path: "/home/{{ new_user }}/.tmux.conf"
@@ -80,7 +76,6 @@
         owner: "{{ new_user }}"
         group: "{{ new_user }}"
         mode: '0644'
-
     - name: Add basic tmux configuration
       lineinfile:
         path: "/home/{{ new_user }}/.tmux.conf"
