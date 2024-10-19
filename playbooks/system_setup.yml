@@ -12,11 +12,12 @@
         shell: "{{ user_shell }}"
         groups: sudo
         append: yes
-    - name: Install fish, tmux, and required packages for Docker
+    - name: Install fish, tmux, nvim, and required packages for Docker
       package:
         name:
           - fish
           - tmux
+          - nvim
           - apt-transport-https
           - ca-certificates
           - curl
