@@ -17,7 +17,7 @@
         name:
           - fish
           - tmux
-          - nvim
+          - neovim
           - apt-transport-https
           - ca-certificates
           - curl
